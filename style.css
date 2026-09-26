@@ -1,0 +1,588 @@
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: rgba(30, 41, 59, 0.7);
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent: #10b981;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+    z-index: -1;
+}
+
+.background-animation::before,
+.background-animation::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.15;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.background-animation::before {
+    background: var(--primary);
+    top: -100px;
+    left: -100px;
+}
+
+.background-animation::after {
+    background: var(--accent);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(100px, 50px); }
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+}
+
+.highlight {
+    color: var(--primary);
+    background: -webkit-linear-gradient(45deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* Controls & Search */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.toggle-container {
+    position: relative;
+    display: flex;
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: 30px;
+    padding: 0.25rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.toggle-container input {
+    display: none;
+}
+
+.toggle-container label {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    z-index: 1;
+    color: var(--text-muted);
+    transition: color 0.3s;
+}
+
+.toggle-container input:checked + label {
+    color: var(--text-main);
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    width: calc(50% - 0.25rem);
+    background: var(--primary);
+    border-radius: 25px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+}
+
+#splaytree:checked ~ .toggle-slider {
+    transform: translateX(100%);
+}
+
+.search-bar {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-family: inherit;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-bar button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 2rem;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-bar button:hover {
+    background: var(--primary-hover);
+}
+
+.error-msg {
+    color: var(--danger);
+    font-weight: 600;
+    min-height: 1.5rem;
+}
+
+/* Cards Section */
+.results-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.card-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.3s, transform 0.5s;
+}
+
+.card-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+.main-card {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    width: 350px;
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    transform: scale(1);
+    transition: transform 0.3s;
+}
+
+.main-card:hover {
+    transform: scale(1.02) translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pokemon-image-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pokemon-image-container::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.pokemon-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    animation: float-img 4s ease-in-out infinite;
+}
+
+@keyframes float-img {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.pokemon-info {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.pokemon-id {
+    color: var(--text-muted);
+    font-weight: 800;
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+#pokemon-name {
+    font-size: 2rem;
+    text-transform: capitalize;
+    margin: 0.5rem 0;
+}
+
+.types {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.type-badge {
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.evolution {
+    background: rgba(0,0,0,0.2);
+    padding: 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.evolution strong {
+    text-transform: capitalize;
+    color: var(--accent);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Mini cards for neighbors */
+.mini-card {
+    background: rgba(30, 41, 59, 0.4);
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+    width: 150px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mini-card:hover {
+    background: rgba(30, 41, 59, 0.8);
+    transform: scale(1.05);
+}
+
+.mini-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+}
+
+.mini-card span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.mini-card h4 {
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+/* Animation Section */
+.animation-section {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    margin-top: 1rem;
+}
+
+.animation-section h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.animation-container {
+    min-height: 200px;
+    position: relative;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 1rem;
+}
+
+/* Skip list / Splay tree nodes */
+.anim-node {
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid var(--primary);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    min-width: 80px;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
+}
+
+.anim-node.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.anim-node.target {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    transform: scale(1.1);
+}
+
+.anim-arrow {
+    color: var(--text-muted);
+    font-weight: bold;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.anim-arrow.show {
+    opacity: 1;
+}
+
+.splay-step {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    animation: fadeIn 0.5s forwards;
+}
+
+.splay-step strong {
+    color: var(--accent);
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Types colors */
+.type-normal { background-color: #A8A77A; color: #fff; }
+.type-fire { background-color: #EE8130; color: #fff; }
+.type-water { background-color: #6390F0; color: #fff; }
+.type-electric { background-color: #F7D02C; color: #000; }
+.type-grass { background-color: #7AC74C; color: #fff; }
+.type-ice { background-color: #96D9D6; color: #000; }
+.type-fighting { background-color: #C22E28; color: #fff; }
+.type-poison { background-color: #A33EA1; color: #fff; }
+.type-ground { background-color: #E2BF65; color: #000; }
+.type-flying { background-color: #A98FF3; color: #fff; }
+.type-psychic { background-color: #F95587; color: #fff; }
+.type-bug { background-color: #A6B91A; color: #fff; }
+.type-rock { background-color: #B6A136; color: #fff; }
+.type-ghost { background-color: #735797; color: #fff; }
+.type-dragon { background-color: #6F35FC; color: #fff; }
+.type-dark { background-color: #705746; color: #fff; }
+.type-steel { background-color: #B7B7CE; color: #000; }
+.type-fairy { background-color: #D685AD; color: #fff; }
+
+@media (max-width: 768px) {
+    .card-container {
+        flex-direction: column;
+    }
+    .card-neighborhood {
+        order: 2;
+        display: flex;
+        gap: 1rem;
+    }
+    .main-card {
+        order: 1;
+    }
+}
+
+/* Suggestions */
+.suggestions-section {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+.suggestions-section p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+.suggestions-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.suggestion-chip {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+.suggestion-chip img {
+    width: 24px;
+    height: 24px;
+}
+.suggestion-chip:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* Splay Tree Visualizer */
+.tree-section {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    margin-top: 1rem;
+    text-align: center;
+    overflow-x: auto;
+}
+.tree-container {
+    display: flex;
+    justify-content: center;
+    min-width: max-content;
+    padding: 1rem;
+}
+.tree-node-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 1rem;
+    position: relative;
+}
+.tree-node {
+    background: rgba(30, 41, 59, 0.8);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 0.5rem;
+    width: 80px;
+    text-align: center;
+    z-index: 2;
+    transition: all 0.3s;
+}
+.tree-node img {
+    width: 40px;
+    height: 40px;
+}
+.tree-node span {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+.tree-children {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    position: relative;
+}
+/* Connecting lines using pseudo-elements */
+.tree-children::before {
+    content: '';
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    width: 1px;
+    height: 2rem;
+    background-color: var(--primary);
+}
+.tree-children.has-siblings::after {
+    content: '';
+    position: absolute;
+    top: -2rem;
+    left: 25%; /* adjust based on children width, simplified here */
+    width: 50%;
+    height: 1px;
+    background-color: var(--primary);
+}

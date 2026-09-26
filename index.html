@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex - Estruturas de Dados</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-animation"></div>
+    <div class="container">
+        <header>
+            <h1>Pokédex <span class="highlight">Search</span></h1>
+            <p>Visualização de Estruturas de Dados: Skip List vs Splay Tree</p>
+        </header>
+
+        <section class="search-section">
+            <div class="controls">
+                <div class="toggle-container">
+                    <input type="radio" id="skiplist" name="algorithm" value="skiplist" checked>
+                    <label for="skiplist">Skip List</label>
+                    <input type="radio" id="splaytree" name="algorithm" value="splaytree">
+                    <label for="splaytree">Splay Tree</label>
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+
+            <div class="suggestions-section">
+                <p>Sugestões aleatórias:</p>
+                <div id="random-suggestions" class="suggestions-container">
+                    <!-- Carregando... -->
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Digite o nome ou ID do Pokémon...">
+                <button id="search-btn">Buscar</button>
+            </div>
+            <div id="error-msg" class="error-msg"></div>
+        </section>
+
+        <section class="results-section">
+            <div id="pokemon-card-container" class="card-container hidden">
+                <div class="card-neighborhood">
+                    <div id="prev-pokemon" class="mini-card hidden"></div>
+                </div>
+                <div id="main-pokemon" class="main-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="pokemon-image-container">
+                                <img id="pokemon-img" src="" alt="Pokemon">
+                            </div>
+                            <div class="pokemon-info">
+                                <span id="pokemon-id" class="pokemon-id"></span>
+                                <h2 id="pokemon-name"></h2>
+                                <div id="pokemon-types" class="types"></div>
+                                <div id="pokemon-evolution" class="evolution hidden">
+                                    <span>Evolui para: </span><strong id="evo-name"></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-neighborhood">
+                    <div id="next-pokemon" class="mini-card hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="animation-section">
+            <h2>Caminho de Busca</h2>
+            <p id="iterations-count" style="text-align: center; color: var(--accent); font-weight: 600; margin-bottom: 1rem;"></p>
+            <div id="animation-container" class="animation-container">
+                <!-- Graphical elements for animation will be injected here -->
+            </div>
+        </section>
+
+        <section id="tree-section" class="tree-section hidden">
+            <h2>Estrutura Atual da Splay Tree</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">(Raiz e sucessores diretos até os netos)</p>
+            <div id="tree-container" class="tree-container">
+                <!-- Splay Tree nodes injected here -->
+            </div>
+        </section>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
