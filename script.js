@@ -1,5 +1,8 @@
 const API_BASE = 'http://localhost:8000';
 
+// Incrementado a cada nova busca; animações antigas param ao perceber que o id mudou
+let currentAnimationId = 0;
+
 document.addEventListener('DOMContentLoaded', () => {
     loadRandomSuggestions();
 
@@ -96,6 +99,7 @@ async function performSearch() {
 }
 
 function hideResults() {
+    currentAnimationId++;
     document.getElementById('pokemon-card-container').classList.add('hidden');
     document.getElementById('animation-container').innerHTML = '';
 }
@@ -158,6 +162,7 @@ function renderPokemon(pokemon, prev, next) {
 }
 
 async function animateSkipList(path, targetId) {
+    const animationId = currentAnimationId;
     const container = document.getElementById('animation-container');
     container.innerHTML = '<div style="width: 100%; text-align: center; color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem; position: absolute; top: 0;">Saltos e quedas de níveis (Nível | ID - Nome)</div>';
     container.style.paddingTop = '3rem';
@@ -196,10 +201,12 @@ async function animateSkipList(path, targetId) {
         }
 
         await new Promise(r => setTimeout(r, 150));
+        if (animationId !== currentAnimationId) return;
     }
 }
 
 async function animateSplayTree(path, splaySteps, targetId) {
+    const animationId = currentAnimationId;
     const container = document.getElementById('animation-container');
     container.innerHTML = '<div style="width: 100%; text-align: center; color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem; position: absolute; top: 0;">Busca na BST e Rotações (Splaying)</div>';
     container.style.paddingTop = '3rem';
@@ -249,6 +256,7 @@ async function animateSplayTree(path, splaySteps, targetId) {
         }
 
         await new Promise(r => setTimeout(r, pathDelay));
+        if (animationId !== currentAnimationId) return;
     }
 
     if (splaySteps && splaySteps.length > 0) {
@@ -283,6 +291,7 @@ async function animateSplayTree(path, splaySteps, targetId) {
             stepDiv.style.opacity = '1';
 
             await new Promise(r => setTimeout(r, delay));
+            if (animationId !== currentAnimationId) return;
         }
 
         const finalDiv = document.createElement('div');

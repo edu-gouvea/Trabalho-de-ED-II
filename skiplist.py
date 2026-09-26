@@ -62,7 +62,9 @@ class SkipList:
                 current = current.forward[i]
             
             iterations += 1
-            path.append({"level": i, "key": current.key, "pokemon_name": current.pokemon.name if current.pokemon else "header", "action": "down"})
+            # No nível 0 não há como descer: o próximo movimento é para a direita (até o alvo)
+            action = "down" if i > 0 else "right"
+            path.append({"level": i, "key": current.key, "pokemon_name": current.pokemon.name if current.pokemon else "header", "action": action})
             update[i] = current
 
         prev_node = current
@@ -71,7 +73,8 @@ class SkipList:
 
         if current and current.key == key:
             next_node = current.forward[0]
-            
+            path.append({"level": 0, "key": current.key, "pokemon_name": current.pokemon.name, "action": "found"})
+
             return {
                 "found": True,
                 "pokemon": current.pokemon.model_dump(),
